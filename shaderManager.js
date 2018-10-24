@@ -1,7 +1,9 @@
 var shaderManager = 
 {
-	program : null,
+	program : null, 
+
 	gl : null,
+	
 	initializeShaders : function(canvasContext)
 	{
 		gl = canvasContext;
@@ -38,10 +40,12 @@ var shaderManager =
 			return;
 		}
 	},
+
 	useProgram : function()
 	{
 		gl.useProgram(program);
 	},
+
 	getProgram : function()
 	{
 		return program;

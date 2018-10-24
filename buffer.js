@@ -2,16 +2,21 @@ class Buffer
 {
 	constructor()
 	{
-		var vertices = 
-		[ // X, Y,       R, G, B
-			0.0, 0.5,    1.0, 1.0, 0.0,
-			-0.5, -0.5,  0.7, 0.0, 1.0,
-			0.5, -0.5,   0.1, 1.0, 0.6
-		];
-	
-		this.buffer = gl.createBuffer();
+        var onMeshLoaded = function(meshData) 
+        { 
+            this.mesh = JSON.parse(meshData);
+
+            UploadMesh(); 
+        }
+
+        Utility.loadJson('file://localhost/mesh.json/', onMeshLoaded);
+    }
+    
+    UploadMesh() 
+    {
+        this.buffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.mesh.vertices), gl.STATIC_DRAW);
 
 		var program = shaderManager.getProgram();
 		var positionAttribLocation = gl.getAttribLocation(program, 'vertPosition');
@@ -41,7 +46,7 @@ class Buffer
         gl.enableVertexAttribArray(colorAttribLocation);
 
 		gl.bindBuffer(gl.ARRAY_BUFFER, null);
-	}
+    }
 
 	Bind()
 	{
