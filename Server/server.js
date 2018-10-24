@@ -1,10 +1,18 @@
 var express = require('express')
+var fileSystem = require('fs')
 
 var server = express()
 
-var requestHandler = function(request, response)
+var getMeshHandler = function(request, response)
 {
-    response.send('great stuff!')
+    fileReadHandler = function(error, data)
+    {
+        response.send(data)
+    }
+
+    fileSystem.readFile(__dirname + '/mesh.json', fileReadHandler)
 }
 
-server.get('/', requestHandler)
+server.get('/getMesh/:meshName', getMeshHandler)
+
+server.listen(7003, () => console.log('TowerDef Server is on.'))
