@@ -2,26 +2,30 @@ class Buffer
 {
 	constructor()
 	{
-        var onMeshLoaded = function(meshData) 
-        { 
-            this.mesh = JSON.parse(meshData);
+		this.buffer = null
 
-            UploadMesh(); 
-        }
+		var onMeshLoaded = function(error, meshData)
+		{
+			this.mesh = JSON.parse(JSON.parse(meshData))
 
-        Utility.loadJson('file://localhost/mesh.json/', onMeshLoaded);
-    }
-    
-    UploadMesh() 
+			this.UploadMesh()
+
+			bufferManager.OnBufferFetched()
+		}.bind(this)
+
+		Utility.fetchJson('mesh', onMeshLoaded)
+	}
+
+    UploadMesh()
     {
-        this.buffer = gl.createBuffer();
+		this.buffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.mesh.vertices), gl.STATIC_DRAW);
 
 		var program = shaderManager.getProgram();
 		var positionAttribLocation = gl.getAttribLocation(program, 'vertPosition');
 		var colorAttribLocation = gl.getAttribLocation(program, 'vertColor');
-		
+
 		gl.vertexAttribPointer
 		(
 			positionAttribLocation, // Attribute location

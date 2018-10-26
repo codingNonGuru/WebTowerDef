@@ -7,10 +7,12 @@ var getMeshHandler = function(request, response)
 {
     fileReadHandler = function(error, data)
     {
-        response.send(data)
+        response.send(JSON.stringify(data))
     }
 
-    fileSystem.readFile(__dirname + '/mesh.json', fileReadHandler)
+    var meshName = request.params['meshName']
+
+    fileSystem.readFile(__dirname + '/' + meshName + '.json', 'utf8', fileReadHandler)
 }
 
 server.get('/getMesh/:meshName', getMeshHandler)
