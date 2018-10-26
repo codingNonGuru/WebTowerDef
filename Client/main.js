@@ -30,6 +30,6 @@ var game =
 		shaderManager.useProgram()
 		bufferManager.Bind()
 
-		gl.drawArrays(gl.TRIANGLES, 0, 3);
+		gl.drawArrays(gl.TRIANGLES, 0, bufferManager.buffer.VertexCount);
 	}
 }
