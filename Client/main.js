@@ -30,6 +30,21 @@ var game =
 		shaderManager.useProgram()
 		bufferManager.Bind()
 
+		var program = shaderManager.getProgram()
+		var matrixLocation = gl.getUniformLocation(program, 'matrix');
+		
+		var worldMatrix = new Float32Array(16);
+		var projMatrix = new Float32Array(16);
+		var viewMatrix = new Float32Array(16);
+
+		mat4.identity(worldMatrix)
+		mat4.lookAt(viewMatrix, [0, 0, -8], [0, 0, 0], [0, 1, 0])
+		mat4.perspective(projMatrix, glMatrix.toRadian(45.0), canvas.clientWidth / canvas.clientHeight, 0.1, 100.0)
+
+		var finalMatrix = projMatrix * viewMatrix * worldMatrix;
+
+		gl.uniformMatrix4fv(matrixLocation, gl.FALSE, finalMatrix);
+
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 	}
 }
